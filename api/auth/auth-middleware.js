@@ -16,6 +16,7 @@ const restricted = (req, res, next) => {
 
     Put the decoded token in the req object, to make life easier for middlewares downstream!
   */
+ next()
 }
 
 const only = role_name => (req, res, next) => {
@@ -62,6 +63,17 @@ const validateRoleName = (req, res, next) => {
       "message": "Role name can not be longer than 32 chars"
     }
   */
+ if(!req.body.role_name || !req.body.role_name.trim()){
+   req.role_name = 'student'
+   next()
+ } else if(req.body.role_name.trim() === 'admin'){
+  next({ status: 422, message:'Role name can not be admin'})
+ } else if(req.body.role_name.trim().lengthg > 32 ){
+  next({ status: 422, message:'Role name can not be longer than 32 chars'})
+ } else{
+  req.role_name = req.role_name.trim()
+  next()
+ }
 }
 
 module.exports = {
