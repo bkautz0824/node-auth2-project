@@ -4,6 +4,8 @@ const { JWT_SECRET } = require("../secrets"); // use this secret!
 const bcrypt = require('bcryptjs')
 const User = require('../users/users-model')
 const jwt = require('jsonwebtoken')
+
+
 router.post("/register", validateRoleName, (req, res, next) => {
   /**
     [POST] /api/auth/register { "username": "anna", "password": "1234", "role_name": "angel" }
@@ -21,11 +23,7 @@ router.post("/register", validateRoleName, (req, res, next) => {
   const hash = bcrypt.hashSync(password, 8)
   User.add({ username, password: hash, role_name})
     .then(newUser => {
-      res.status(200).json({
-        user: newUser.user,
-        username: newUser.username,
-        role_name: newUser.role_name
-      })
+      res.status(200).json(newUser)
     })
     .catch(err => {
       next(err)

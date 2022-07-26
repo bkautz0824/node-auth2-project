@@ -30,6 +30,7 @@ const only = role_name => (req, res, next) => {
 
     Pull the decoded token from the req object, to avoid verifying it again!
   */
+ next()
 }
 
 
@@ -46,6 +47,7 @@ const checkUsernameExists = async (req, res, next) => {
   if(!user){
     next({ status: 422, message: 'Invalid credentials'})
   } else{
+    req.user = user
     next()
   }
  }catch (err){
